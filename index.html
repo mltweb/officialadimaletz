@@ -311,31 +311,37 @@
         <header>
     <p class="neon-text">Connect with me through my official links below</p>
             <style>
-    /* Game-Style Neon Text Styling */
     .neon-text {
         font-size: 1.4em;
         font-weight: 700;
-        color: #00FF9F; /* Neon green for main text color */
-        margin-bottom: 0.1px;
-        padding-bottom: 10px;
-        position: relative;
-        text-transform: uppercase;
+        color: #000000;
         letter-spacing: 1.5px;
-        text-shadow: 0 0 5px #00FF9F, 0 0 10px #00FF9F, 0 0 15px #00FF9F, 0 0 20px #00BFFF, 0 0 30px #00BFFF;
-        animation: neon-glow-game 1.8s ease-in-out infinite alternate;
+        text-shadow:
+            0 0 2px #000000,
+            0 0 4px #000000,
+            0 0 10px #43aabe,
+            0 0 15px #FFFF33;
+        animation: subtle-pulse 2.5s ease-in-out infinite;
     }
 
-    /* Game-style neon glow animation */
-    @keyframes neon-glow-game {
-        from {
-            text-shadow: 0 0 5px #00FF9F, 0 0 10px #00BFFF, 0 0 15px #00BFFF, 0 0 20px #00FF9F;
+    @keyframes subtle-pulse {
+        0%, 100% {
+            text-shadow:
+                0 0 2px #000000,
+                0 0 4px #000000,
+                0 0 10px #43aabe,
+                0 0 15px #FFFF33;
         }
-        to {
-            text-shadow: 0 0 10px #00FF9F, 0 0 15px #00BFFF, 0 0 25px #00BFFF, 0 0 30px #00FF9F;
+        50% {
+            text-shadow:
+                0 0 3px #000000,
+                0 0 6px #000000,
+                0 0 12px #43aabe,
+                0 0 18px #FFFF33;
         }
     }
 
-    }</style>
+    </style>
         </header>
 
         <!-- Chevron arrow animation container with all chevrons inside -->
@@ -346,14 +352,14 @@
         </div>
 
         <!-- Link Buttons -->
-        <a href="https://www.schultzcode.com" class="link">
-            <img src="schultzcode_logo.jpg" alt="Schultzcode Icon"> SchultzCode Technologies
-        </a>
         <a href="https://www.mltme.com/" class="link">
             <img src="MLT_logo.jpg" alt="MLT Icon"> MLT Diamond & Jewelry
         </a>
         <a href="http://www.skool.com/the-golden-vault-3282" class="link">
             <img src="the golder vault cover community.jpg" alt="Skool Icon"> The Golden Vault Community
+        </a>
+        <a href="https://www.schultzcode.com" class="link">
+            <img src="schultzcode_logo.jpg" alt="Schultzcode Icon"> SchultzCode Technologies
         </a>
         <a href="https://www.tiktok.com/@adi_maletz?_t=8qUQJ9wwDpZ&_r=1" class="link">
             <svg enable-background="new 0 0 24 24" viewBox="0 0 24 24">
