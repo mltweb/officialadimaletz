@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://twgljs.org/dist/4.x/twgl-full.min.js"></script>
     <style>
-        /* Your existing styles */
+        /* Updated CSS for centered text in buttons */
         body {
             margin: 0;
             font-family: consolas;
@@ -29,7 +29,7 @@
         .link-button {
             display: flex;
             align-items: center;
-            justify-content: left;
+            justify-content: center; /* Center content horizontally */
             width: 100%;
             max-width: 380px;
             padding: 15px;
@@ -93,12 +93,10 @@
             z-index: 0;
             pointer-events: none;
         }
-        .link-text-video { flex: 1; margin-left: 10px; }
-        .link-text { flex: 1; margin-left: 72px; }
-        .link-text-tiktok { flex: 1; margin-left: 84px; }
-        .link-text-you { flex: 1; margin-left: 80px; }
-        .link-text-long { flex: 1; margin-left: 20px; }
-        .link-text-long1 { flex: 1; margin-left: 15px; }
+        .link-text-video, .link-text, .link-text-tiktok, .link-text-you, .link-text-long, .link-text-long1 {
+            flex: 1;
+            text-align: center; /* Center text */
+        }
         @keyframes glitch {
             0% { transform: translate(0); opacity: 1; }
             20% { transform: translate(-2px, -2px); opacity: 0.8; }
@@ -147,8 +145,6 @@
             border-radius: 50%;
             animation: cubeBorderColors 3s linear infinite;
         }
-
-        /* New styles for the YouTube video section */
         .video-container {
             width: 100%;
             max-width: 560px;
@@ -185,38 +181,30 @@
             font-size: 18px;
             font-weight: bold;
         }
-
-        /* Media Queries for Responsiveness */
         @media (max-width: 768px) {
             .link-button {
                 width: 90%;
                 font-size: 16px;
             }
-
             #main-content {
                 padding-top: 20px;
             }
-
             .video-container {
                 width: 90%;
             }
-
             iframe {
                 width: 100%;
                 height: auto;
             }
         }
-
         @media (max-width: 480px) {
             .link-button {
                 width: 100%;
                 font-size: 14px;
             }
-
             h1 {
                 font-size: 24px;
             }
-
             p {
                 font-size: 14px;
             }
@@ -224,7 +212,6 @@
     </style>
 </head>
 <body>
-
     <!-- Main Content -->
     <div id="main-content">
         <div class="relative inline-flex items-center">
@@ -433,6 +420,5 @@
                 .catch(error => console.error('Error fetching YouTube video:', error));
         });
     </script>
-
 </body>
 </html>
