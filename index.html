@@ -146,24 +146,25 @@
             animation: cubeBorderColors 3s linear infinite;
         }
         .video-container {
-      width: 100%;
+       width: 100%;
     max-width: 560px;
     margin: 20px auto;
     padding: 10px;
-    background: #121F32; /* Dark blue-gray */
+    background: linear-gradient(135deg, #121F32, #FFFFFF, #121F32);
+    background-size: 200% 200%;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    animation: colorShift 8s infinite;
+    animation: gradientShift 8s ease infinite;
 }
 
-@keyframes colorShift {
-    0% { background: #121F32; } /* Dark blue-gray */
-    50% { background: #FFFFFF; } /* White */
-    100% { background: #121F32; } /* Dark blue-gray */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
         iframe {
