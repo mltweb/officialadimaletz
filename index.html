@@ -146,18 +146,26 @@
             animation: cubeBorderColors 3s linear infinite;
         }
         .video-container {
-            width: 100%;
-            max-width: 560px;
-            margin: 20px auto;
-            padding: 10px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+      width: 100%;
+    max-width: 560px;
+    margin: 20px auto;
+    padding: 10px;
+    background: #121F32; /* Dark blue-gray */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    animation: colorShift 8s infinite;
+}
+
+@keyframes colorShift {
+    0% { background: #121F32; } /* Dark blue-gray */
+    50% { background: #FFFFFF; } /* White */
+    100% { background: #121F32; } /* Dark blue-gray */
+}
+
         iframe {
             width: 100%;
             height: 315px;
@@ -212,6 +220,8 @@
         #watch-video-button .svg-icon-wrapper {
     margin-right: 8px; /* Adjust this value as needed */
 }
+
+
     </style>
 </head>
 <body>
@@ -280,7 +290,6 @@
             <span class="link-text">Instagram</span>
         </a>
     </div>
-
     <!-- Shader Canvas for Footer Effect -->
     <canvas id="canvas"></canvas>
 
