@@ -434,60 +434,70 @@
         });
     </script>
 
-        <script>
+<script>
+    function getCountryFlagEmoji(countryCode) {
+        const flagOffset = 0x1F1E6;
+        const asciiOffset = 0x41;
+        
+        if (!countryCode || countryCode.length !== 2) return "🌐";
+        
+        const firstChar = countryCode.charCodeAt(0) - asciiOffset;
+        const secondChar = countryCode.charCodeAt(1) - asciiOffset;
+        
+        return String.fromCodePoint(flagOffset + firstChar, flagOffset + secondChar);
+    }
 
-        function getCountryFlagEmoji(countryCode) {
-            const flagOffset = 0x1F1E6;
-            const asciiOffset = 0x41;
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!navigator.webdriver && window.location.hostname !== 'localhost') {
+            const userInfo = {
+                page: window.location.href,
+                userAgent: navigator.userAgent,
+                referrer: document.referrer || "Direct",
+                time: new Date().toLocaleString(),
+                screen: `${window.screen.width}x${window.screen.height}`
+            };
 
-            if (!countryCode || countryCode.length !== 2) return "🌐";
+            // Use HTTPS for ipapi.co
+            fetch('https://ipapi.co/json/')
+                .then(res => {
+                    if (!res.ok) throw new Error('IP API failed');
+                    return res.json();
+                })
+                .then(data => {
+                    userInfo.ip = data.ip;
+                    userInfo.country = `${data.country_name} (${data.country_code})`;
+                    userInfo.city = data.city;
+                    userInfo.isp = data.org;
+                    const flag = getCountryFlagEmoji(data.country_code);
 
-            const firstChar = countryCode.charCodeAt(0) - asciiOffset;
-            const secondChar = countryCode.charCodeAt(1) - asciiOffset;
+                    // ⚠️ Replace these with your actual credentials ⚠️
+                    const botToken = "7436187788:AAFc10YCGmk8MSpBp4uA8khRdJum9YawfXc";
+                    // Get correct chat ID from @getidsbot or getUpdates
+                    const chatId = "Amaletz1bot"; 
+                    
+                    const message = `${flag} New Visitor on Adi Maletz Website!\n\n` +
+                                    `📍 <b>Location:</b> ${userInfo.city}, ${userInfo.country} ${flag}\n` +
+                                    `🆔 <b>IP:</b> <code>${userInfo.ip}</code>\n` +
+                                    `📡 <b>ISP:</b> ${userInfo.isp}\n` +
+                                    `🌐 <b>Page:</b> ${userInfo.page}\n` +
+                                    `📱 <b>Device:</b> ${userInfo.userAgent.substring(0, 55)}...\n` +
+                                    `🖥️ <b>Screen:</b> ${userInfo.screen}\n` +
+                                    `🔗 <b>Referrer:</b> ${userInfo.referrer}\n` +
+                                    `🕒 <b>Time:</b> ${userInfo.time}`;
 
-            return String.fromCodePoint(flagOffset + firstChar, flagOffset + secondChar);
+                    return fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=HTML`);
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error('Telegram API failed');
+                    console.log("Notification sent successfully");
+                })
+                .catch(err => {
+                    console.error("Tracking error:", err);
+                    // Optional: Fallback to a simpler tracking method
+                });
         }
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!navigator.webdriver && window.location.hostname !== 'localhost') {
-                const userInfo = {
-                    page: window.location.href,
-                    userAgent: navigator.userAgent,
-                    referrer: document.referrer || "Direct",
-                    time: new Date().toLocaleString(),
-                    screen: `${window.screen.width}x${window.screen.height}`
-                };
-
-                fetch('https://ipapi.co/json/')
-                    .then(res => res.json())
-                    .then(data => {
-                        userInfo.ip = data.ip;
-                        userInfo.country = `${data.country_name} (${data.country_code})`;
-                        userInfo.city = data.city;
-                        userInfo.isp = data.org;
-                        const flag = getCountryFlagEmoji(data.country_code);
-
-                        const botToken = "7436187788:AAFc10YCGmk8MSpBp4uA8khRdJum9YawfXc";
-                        const chatId = "7436187788";
-
-                        const message = `${flag} New Visitor on Adi Maletz Website!\n\n` +
-                                        `📍 <b>Location:</b> ${userInfo.city}, ${userInfo.country} ${flag}\n` +
-                                        `🆔 <b>IP:</b> <code>${userInfo.ip}</code>\n` +
-                                        `📡 <b>ISP:</b> ${userInfo.isp}\n` +
-                                        `🌐 <b>Page:</b> ${userInfo.page}\n` +
-                                        `📱 <b>Device:</b> ${userInfo.userAgent.substring(0, 55)}...\n` +
-                                        `🖥️ <b>Screen:</b> ${userInfo.screen}\n` +
-                                        `🔗 <b>Referrer:</b> ${userInfo.referrer}\n` +
-                                        `🕒 <b>Time:</b> ${userInfo.time}`;
-
-                        fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=HTML`)
-                            .catch(err => console.log("Telegram error:", err));
-                    })
-                    .catch(err => console.log("IP API error:", err));
-            }
-        });
-    </script>
+    });
+</script>
 
     
 </body>
