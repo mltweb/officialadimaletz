@@ -434,17 +434,9 @@
         });
     </script>
 <script>
-    
-    function showDebugAlert(message) {
-
-        console.log(message);
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
         if (!navigator.webdriver) {
-            showDebugAlert("Script started - preparing to track visitor");
-            
-            
+
             const ua = navigator.userAgent;
             let device = '📱 ';
             
@@ -456,7 +448,7 @@
             else if (/huawei/i.test(ua)) device += 'Huawei';
             else device += 'Device: ' + navigator.platform;
 
-            
+
             let browser = '🌐 ';
             if (/brave/i.test(ua)) browser += 'Brave';
             else if (/instagram/i.test(ua)) browser += 'Instagram Browser';
@@ -466,49 +458,41 @@
             else if (/edge/i.test(ua)) browser += 'Edge';
             else browser += 'Browser';
 
-            
+
             let os = '⚙️ ';
-            const androidVersion = /android\s([0-9.]+)/i.exec(ua);
-            const iosVersion = /os\s([\d_]+)/i.exec(ua);
-            
-            if (/android/i.test(ua)) os += 'Android ' + (androidVersion ? androidVersion[1] : '');
-            else if (/iphone|ipad/i.test(ua)) os += 'iOS ' + (iosVersion ? iosVersion[1].replace(/_/g, '.') : '');
+            if (/android/i.test(ua)) os += 'Android ' + (/android\s([0-9.]+)/i.exec(ua)?.[1] || '');
+            else if (/iphone|ipad/i.test(ua)) os += 'iOS ' + (/os\s([\d_]+)/i.exec(ua)?.[1]?.replace(/_/g, '.') || '');
             else if (/macintosh/i.test(ua)) os += 'MacOS';
             else if (/windows/i.test(ua)) os += 'Windows';
             else if (/linux/i.test(ua)) os += 'Linux';
 
-            showDebugAlert("Device info gathered - fetching location");
-            
-          
+            const language = navigator.language || 'Unknown';
+            const languages = navigator.languages ? navigator.languages.join(', ') : language;
+
             fetch('https://ipapi.co/json/')
                 .then(res => {
-                    if (!res.ok) throw new Error(`IP API failed with status ${res.status}`);
+                    if (!res.ok) throw new Error('IP API failed');
                     return res.json();
                 })
                 .then(data => {
-                    showDebugAlert("Location data received");
-                    
                     const mapLink = data.latitude && data.longitude 
                         ? `https://maps.google.com?q=${data.latitude},${data.longitude}`
-                        : data.city 
-                            ? `https://maps.google.com/maps?q=${encodeURIComponent(data.city)}` 
-                            : null;
+                        : `https://maps.google.com/maps?q=${encodeURIComponent(data.city || '')}`;
 
-                    const message = `🆕 <b>New Visitor!</b>\n\n` +
-                                   `🕒 ${new Date().toLocaleString()}\n` +
-                                   `📍 ${data.city || 'Unknown'}, ${data.country || 'Unknown'} (${data.country_code || '??'})\n` +
-                                   (mapLink ? `🗺️ <a href="${mapLink}">View Map</a>\n` : '') +
-                                   `🆔 <code>${data.ip}</code>\n` +
-                                   `📡 ${data.org || 'Unknown ISP'}\n\n` +
+                    const message = `🆕 <b>New Visitor on officialadimaletz Website!</b>\n\n` +
+                                   `📅 <b>Time:</b> ${new Date().toLocaleString()}\n` +
+                                   `📍 <b>Location:</b> ${data.city || 'Unknown'}, ${data.country || 'Unknown'} (${data.country_code || '??'})\n` +
+                                   `🗺️ <b>Map:</b> <a href="${mapLink}">View Location</a>\n` +
+                                   `🆔 <b>IP:</b> <code>${data.ip}</code>\n` +
+                                   `📡 <b>ISP:</b> ${data.org || 'Unknown'}\n` +
+                                   `🌍 <b>Language:</b> ${language} (${languages})\n\n` +  // NEW LINE
                                    `${device}\n` +
                                    `${os}\n` +
                                    `${browser}\n` +
-                                   `🖥️ ${screen.width}x${screen.height}`;
+                                   `🖥️ <b>Screen:</b> ${screen.width}x${screen.height}`;
 
-                    showDebugAlert("Preparing Telegram message: " + message.substring(0, 50) + "...");
-                    
-                    
-                    const botToken = "7436187788:AAFc10YCGmk8MSpBp4uA8khRdJum9YawfXc"; 
+
+                    const botToken = "7436187788:AAFc10YCGmk8MSpBp4uA8khRdJum9YawfXc";
                     const chatId = "5672223315";
                     
                     return fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -523,16 +507,11 @@
                     });
                 })
                 .then(res => {
-                    if (!res.ok) return res.text().then(text => { throw new Error(text) });
-                    showDebugAlert("Notification sent successfully!");
+                    if (!res.ok) throw new Error('Telegram API failed');
+                    console.log('Notification sent successfully');
                 })
                 .catch(err => {
-                    console.error("Full error:", err);
-                    showDebugAlert("Error: " + err.message);
-                    
-                    // Optional: Fallback notification
-                    const fallbackMessage = `⚠️ Visitor tracking failed: ${err.message.substring(0, 100)}`;
-                    // Send simplified error report to Telegram
+                    console.error('Error:', err);
                 });
         }
     });
