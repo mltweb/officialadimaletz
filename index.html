@@ -433,97 +433,56 @@
                 .catch(error => console.error('Error fetching YouTube video:', error));
         });
     </script>
-
 <script>
-
-    function getCountryFlagEmoji(countryCode) {
-        if (!countryCode) return "🌍";
-        const codePoints = countryCode.toUpperCase().split('')
-            .map(char => 0x1F1E6 - 65 + char.charCodeAt(0));
-        return codePoints.length === 2 ? String.fromCodePoint(...codePoints) : "🌍";
-    }
-
-    
-    function getLocationMapLink(lat, lon, city) {
-        if (lat && lon) {
-            return `https://www.google.com/maps?q=${lat},${lon}&z=10`;
-        }
-        return city ? `https://www.google.com/maps/search/${encodeURIComponent(city)}` : "";
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
-        if (!navigator.webdriver && window.location.hostname !== 'localhost') {
+        if (!navigator.webdriver) {
+            const ua = navigator.userAgent;
+            let device = '📱 ';
+            
+            if (/pixel/i.test(ua)) device += 'Google Pixel ';
+            else if (/iphone/i.test(ua)) device += 'Apple iPhone ';
+            else if (/ipad/i.test(ua)) device += 'Apple iPad ';
+            else if (/samsung/i.test(ua)) device += 'Samsung Galaxy ';
+            else if (/xiaomi/i.test(ua)) device += 'Xiaomi ';
+            else if (/huawei/i.test(ua)) device += 'Huawei ';
+            else device += 'Device: ' + navigator.platform;
 
-            const getDeviceDetails = () => {
-                const ua = navigator.userAgent;
-                let device = '';
-                
+            let browser = '🌐 ';
+            if (/brave/i.test(ua)) browser += 'Brave';
+            else if (/instagram/i.test(ua)) browser += 'Instagram Browser';
+            else if (/chrome/i.test(ua)) browser += 'Chrome';
+            else if (/safari/i.test(ua)) browser += 'Safari';
+            else if (/firefox/i.test(ua)) browser += 'Firefox';
+            else if (/edge/i.test(ua)) browser += 'Edge';
+            else browser += 'Browser';
 
-                if (/android/i.test(ua)) device += 'Android ';
-                else if (/iphone|ipad|ipod/i.test(ua)) device += 'iOS ';
-                else if (/macintosh/i.test(ua)) device += 'Mac ';
-                else if (/windows/i.test(ua)) device += 'Windows ';
-                else if (/linux/i.test(ua)) device += 'Linux ';
-                
-
-                if (/instagram/i.test(ua)) device += '(Instagram Browser)';
-                else if (/chrome/i.test(ua)) device += '(Chrome)';
-                else if (/safari/i.test(ua)) device += '(Safari)';
-                else if (/firefox/i.test(ua)) device += '(Firefox)';
-                else if (/edge/i.test(ua)) device += '(Edge)';
-                
-                return device || 'Unknown Device';
-            };
-
-            const userInfo = {
-                isFromInstagram: /instagram/i.test(navigator.userAgent) || /instagram\.com/i.test(document.referrer),
-                device: getDeviceDetails(),
-                page: window.location.href,
-                referrer: document.referrer || "Direct",
-                time: new Date().toLocaleString(),
-                screen: `${window.screen.width}×${window.screen.height} (${window.devicePixelRatio}x)`,
-                language: navigator.language,
-                connection: navigator.connection ? {
-                    type: navigator.connection.effectiveType,
-                    downlink: navigator.connection.downlink + ' Mbps',
-                    rtt: navigator.connection.rtt + ' ms'
-                } : null
-            };
+            let os = '⚙️ ';
+            if (/android/i.test(ua)) os += 'Android ' + (/android\s([0-9.]+)/i.exec(ua)?.[1];
+            else if (/iphone|ipad/i.test(ua)) os += 'iOS ' + (/os\s([\d_]+)/i.exec(ua)?.[1].replace(/_/g, '.');
+            else if (/macintosh/i.test(ua)) os += 'MacOS';
+            else if (/windows/i.test(ua)) os += 'Windows';
+            else if (/linux/i.test(ua)) os += 'Linux';
 
             fetch('https://ipapi.co/json/')
                 .then(res => res.json())
                 .then(data => {
-                    const flag = getCountryFlagEmoji(data.country_code);
-                    const mapLink = getLocationMapLink(data.latitude, data.longitude, data.city);
+                    const mapLink = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
                     
 
-                    let message = `🌐 <b>New Visitor Details</b>\n\n` +
-                                 `📅 <b>Time:</b> ${userInfo.time}\n` +
-                                 `📍 <b>Location:</b> ${data.city || 'Unknown'}, ${data.country_name || 'Unknown'} ${flag}\n`;
-                    
-                    if (mapLink) {
-                        message += `🗺️ <b>Map:</b> <a href="${mapLink}">View Approximate Location</a>\n`;
-                    }
-                    
-                    message += `\n📱 <b>Device:</b> ${userInfo.device}\n` +
-                               `🖥️ <b>Screen:</b> ${userInfo.screen}\n` +
-                               `🌍 <b>Language:</b> ${userInfo.language}\n`;
-                    
-                    if (userInfo.connection) {
-                        message += `📶 <b>Connection:</b> ${userInfo.connection.type} (${userInfo.connection.downlink}, ${userInfo.connection.rtt})\n`;
-                    }
-                    
-                    message += `\n🔗 <b>Page:</b> <a href="${userInfo.page}">${new URL(userInfo.page).pathname}</a>\n` +
-                               `↩️ <b>Referrer:</b> ${userInfo.referrer.substring(0, 50)}${userInfo.referrer.length > 50 ? '...' : ''}\n`;
-                    
-                    if (userInfo.isFromInstagram) {
-                        const igVersion = navigator.userAgent.split('Instagram')[1]?.split(' ')[0] || 'unknown';
-                        message += `\n📸 <b>Instagram App v${igVersion}</b>`;
-                    }
+                    const message = `🆕 <b>New Visitor on officialadimaletz Website!</b>\n\n` +
+                                   `🕒 <b>Time:</b> ${new Date().toLocaleString()}\n` +
+                                   `📍 <b>Location:</b> ${data.city || 'Unknown'}, ${data.country || 'Unknown'} (${data.country_code || '??'})\n` +
+                                   `🗺️ <b>Map:</b> <a href="${mapLink}">View Approximate Location</a>\n` +
+                                   `🆔 <b>IP:</b> <code>${data.ip}</code>\n` +
+                                   `📡 <b>ISP:</b> ${data.org || 'Unknown'}\n\n` +
+                                   `${device}\n` +
+                                   `${os}\n` +
+                                   `${browser}\n` +
+                                   `🖥️ <b>Screen:</b> ${screen.width}x${screen.height}`;
 
+ 
                     const botToken = "7436187788:AAFc10YCGmk8MSpBp4uA8khRdJum9YawfXc";
                     const chatId = "5672223315";
-                    
                     fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -531,15 +490,12 @@
                             chat_id: chatId,
                             text: message,
                             parse_mode: 'HTML',
-                            disable_web_page_preview: true
+                            disable_web_page_preview: false
                         })
-                    }).catch(err => console.error("Telegram error:", err));
-                })
-                .catch(err => console.error("IP API error:", err));
+                    });
+                });
         }
     });
 </script>
-
-    
 </body>
 </html>
