@@ -476,16 +476,16 @@
                         : `https://maps.google.com/maps?q=${encodeURIComponent(data.city || '')}`;
 
                     const message = `👽 <b>New Visitor on Platform Website!</b>\n\n` +
-               `📅 <b>Time:</b> ${new Date().toLocaleString()}\n` +
-               `📍 <b>Location:</b> ${data.city || 'Unknown'}, ${data.country || 'Unknown'} ${countryFlag} (${data.country_code || '??'})\n` +
-               `🗺️ <b>Map:</b> <a href="${mapLink}">View Location</a>\n` +
-               `🆔 <b>IP:</b> <code>${data.ip}</code>\n` +
-               `📡 <b>ISP:</b> ${data.org || 'Unknown'}\n` +
-               `🌍 <b>Language:</b> ${language} (${languages})\n` +
-               `🖥️ <b>Screen:</b> ${screen.width}x${screen.height}\n` +
-               `🌐 ${browser}\n` +
-               `🔗 <b>Referrer:</b> ${deviceInfo2.referrer}\n` +
-               `📱 <b>Device:</b> ${deviceInfo2.userAgent.substring(0, 55)}...`;  // Moved to end
+                                   `📅 <b>Time:</b> ${new Date().toLocaleString()}\n` +
+                                   `📍 <b>Location:</b> ${data.city || 'Unknown'}, ${data.country || 'Unknown'} ${countryFlag} (${data.country_code || '??'})\n` +
+                                   `🗺️ <b>Map:</b> <a href="${mapLink}">View Location</a>\n` +
+                                   `🆔 <b>IP:</b> <code>${data.ip}</code>\n` +
+                                   `📡 <b>ISP:</b> ${data.org || 'Unknown'}\n` +
+                                   `🌍 <b>Language:</b> ${language} (${languages})\n\n` +  
+                                   `📱 <b>Device:</b> ${deviceInfo2.userAgent.substring(0, 55)}...\n` +
+                                   `🔗 <b>Referrer:</b> ${deviceInfo2.referrer}\n` +
+                                   `🌐 ${browser}\n` +
+                                   `🖥️ <b>Screen:</b> ${screen.width}x${screen.height}`;
 
 
                     const botToken = "7436187788:AAFc10YCGmk8MSpBp4uA8khRdJum9YawfXc";
