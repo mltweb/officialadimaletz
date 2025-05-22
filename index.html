@@ -487,20 +487,28 @@
                `🌐 ${browser}\n` +
                `🖥️ <b>Screen:</b> ${screen.width}x${screen.height}`;
 
-            return fetch('https://patient-feather-54ff.contactschultzcode.workers.dev', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ message })
-            });
-          })
-          .then(res => {
-            if (!res.ok) throw new Error('Failed to send message to Cloudflare Worker');
-            console.log('Notification sent securely');
-          })
-          .catch(err => {
-            console.error('Error:', err);
-          });
-      }
+                    const botToken = "7436187788:AAFc10YCGmk8MSpBp4uA8khRdJum9YawfXc";
+                    const chatId = "5672223315";
+                    
+                    return fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: message,
+                            parse_mode: 'HTML',
+                            disable_web_page_preview: false
+                        })
+                    });
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error('Telegram API failed');
+                    console.log('Notification sent successfully');
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                });
+        }
     });
 </script>
 </body>
