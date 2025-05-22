@@ -475,42 +475,41 @@
                         ? `https://maps.google.com?q=${data.latitude},${data.longitude}`
                         : `https://maps.google.com/maps?q=${encodeURIComponent(data.city || '')}`;
 
-                    const message = `👽 <b>New Visitor on Platform Website!</b>\n\n` +
-                                   `📅 <b>Time:</b> ${new Date().toLocaleString()}\n` +
-                                   `📍 <b>Location:</b> ${data.city || 'Unknown'}, ${data.country || 'Unknown'} ${countryFlag} (${data.country_code || '??'})\n` +
-                                   `🗺️ <b>Map:</b> <a href="${mapLink}">View Location</a>\n` +
-                                   `🆔 <b>IP:</b> <code>${data.ip}</code>\n` +
-                                   `📡 <b>ISP:</b> ${data.org || 'Unknown'}\n` +
-                                   `🌍 <b>Language:</b> ${language} (${languages})\n\n` +  
-                                   `📱 <b>Device:</b> ${deviceInfo2.userAgent.substring(0, 55)}...\n` +
-                                   `🔗 <b>Referrer:</b> ${deviceInfo2.referrer}\n` +
-                                   `🌐 ${browser}\n` +
-                                   `🖥️ <b>Screen:</b> ${screen.width}x${screen.height}`;
+                   const message = `👽 <b>New Visitor on Platform Website!</b>\n\n` +
+               `📅 <b>Time:</b> ${new Date().toLocaleString()}\n` +
+               `📍 <b>Location:</b> ${data.city || 'Unknown'}, ${data.country || 'Unknown'} ${countryFlag} (${data.country_code || '??'})\n` +
+               `🗺️ <b>Map:</b> <a href="${mapLink}">View Location</a>\n` +
+               `🆔 <b>IP:</b> <code>${data.ip}</code>\n` +
+               `📡 <b>ISP:</b> ${data.org || 'Unknown'}\n` +
+               `🌍 <b>Language:</b> ${language} (${languages})\n\n` +  
+               `📱 <b>Device:</b> ${deviceInfo2.userAgent.substring(0, 55)}...\n` +
+               `🔗 <b>Referrer:</b> ${deviceInfo2.referrer}\n` +
+               `🌐 ${browser}\n` +
+               `🖥️ <b>Screen:</b> ${screen.width}x${screen.height}`;
 
 
-                    const botToken = "7436187788:AAFc10YCGmk8MSpBp4uA8khRdJum9YawfXc";
-                    const chatId = "5672223315";
-                    
-                    return fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: chatId,
-                            text: message,
-                            parse_mode: 'HTML',
-                            disable_web_page_preview: false
-                        })
-                    });
-                })
-                .then(res => {
-                    if (!res.ok) throw new Error('Telegram API failed');
-                    console.log('Notification sent successfully');
-                })
-                .catch(err => {
-                    console.error('Error:', err);
-                });
-        }
-    });
+const workerUrl = 'https://floral-bird-485b.contactschultzcode.workers.dev/';
+const chatId = "5672223315"; 
+
+fetch(workerUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        chatId: chatId,
+        message: message
+    })
+})
+.then(res => res.json())
+.then(data => {
+    if (data.success) {
+        console.log('Notification sent successfully');
+    } else {
+        console.error('Error:', data.error);
+    }
+})
+.catch(err => {
+    console.error('Fetch error:', err);
+});
 </script>
 </body>
 </html>
