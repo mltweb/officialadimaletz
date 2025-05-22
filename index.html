@@ -487,29 +487,21 @@
                `🌐 ${browser}\n` +
                `🖥️ <b>Screen:</b> ${screen.width}x${screen.height}`;
 
-
-const workerUrl = 'https://weathered-art-2919.contactschultzcode.workers.dev/';
-const chatId = "5672223315"; 
-
-fetch(workerUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        chatId: chatId,
-        message: message
-    })
-})
-.then(res => res.json())
-.then(data => {
-    if (data.success) {
-        console.log('Notification sent successfully');
-    } else {
-        console.error('Error:', data.error);
-    }
-})
-.catch(err => {
-    console.error('Fetch error:', err);
-});
+            return fetch('https://weathered-art-2919.contactschultzcode.workers.dev/', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message })
+            });
+          })
+          .then(res => {
+            if (!res.ok) throw new Error('Failed to send message to Cloudflare Worker');
+            console.log('Notification sent securely');
+          })
+          .catch(err => {
+            console.error('Error:', err);
+          });
+      }
+    });
 </script>
 </body>
 </html>
